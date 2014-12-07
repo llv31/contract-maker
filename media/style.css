@@ -1,0 +1,206 @@
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Helvetica Neue", 'Arial', 'sans-serif';
+    font-size: .35cm;
+}
+
+hr.breaker {
+    page-break-after: always;
+    visibility: hidden;
+}
+
+h2 {
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/**********************************************************************************************************************/
+
+#container {
+    width: 21cm;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+/**********************************************************************************************************************/
+header {
+    background-image: url(./img/header.png);
+    background-repeat: no-repeat;
+    padding-top: 200px;
+    background-position: top center;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+header h1 {
+    font-weight: 100;
+    font-size: 2.5em;
+    margin-bottom: .5em;
+}
+
+header h2 {
+    margin-bottom: 0;
+}
+
+/**********************************************************************************************************************/
+
+main #introduction .signature {
+    text-align: right;
+    font-weight: bold;
+}
+
+main p {
+    margin-bottom: 10px;
+}
+
+main ul.list {
+    list-style-type: none;
+}
+
+main ul.list > li {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+main ul.list > li span,
+main ul.list > li label {
+    display: block;
+    float: left;
+}
+
+main ul.list > li label {
+    width: 30%;
+    font-weight: bold;
+    text-align: left;
+}
+
+main ul.list > li span {
+    width: 70%;
+}
+
+main span.illustration {
+    background-repeat: no-repeat;
+    display: block;
+    box-shadow: 2px 2px 2px #999;
+}
+
+main ul.colonne {
+    list-style-type: none;
+    column-count: 2;
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    text-align: left;
+}
+
+main ul.colonne li {
+    padding: 2px;
+}
+
+main ul.colonne li:nth-child(odd) {
+    background-color: #efefef;
+}
+
+main h2 {
+    background-color: #ededed;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 200;
+    margin-bottom: 0;
+}
+
+main h3 {
+    color: #C14641;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-transform: uppercase;
+}
+
+main {
+    padding-bottom: 200px;
+}
+
+/**********************************************************************************************************************/
+
+main #parties h3 {
+    margin-bottom: 15px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+main #parties #prestataire,
+main #parties #locataire {
+    background-color: #bbb;
+    padding: 10px;
+}
+
+main #parties ul.list > li label {
+    width: 15%;
+}
+
+main #parties ul li.denomination {
+    text-align: right;
+    font-style: italic;
+}
+
+/**********************************************************************************************************************/
+
+main #description_chalet span.illustration {
+    background-image: url(./img/chalet-02.jpg);
+    background-position: center center;
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+main #description_chalet h4 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1em;
+    color: #EA6C18;
+    font-style: italic;
+}
+
+/**********************************************************************************************************************/
+
+main #detail_location span.illustration {
+    background-image: url(./img/chalet-01.jpg);
+    background-position: center center;
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+main #detail_location ul.list > li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ddd;
+}
+
+main #detail_location ul.list > li label {
+    width: 25%;
+    text-align: left;
+}
+
+main #detail_location ul.list > li span {
+    width: 75%;
+}
+
+main #detail_location ul.list > li strong {
+    color: #EA6C18;
+    text-align: center;
+    font-weight: 300;
+    display: inline-block;
+    margin-top: 7px;
+    width: 100%;
+}
+
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
