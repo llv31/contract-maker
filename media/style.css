@@ -107,6 +107,10 @@ main ul.colonne li:nth-child(odd) {
     background-color: #efefef;
 }
 
+main ul.detail {
+    list-style-position: inside;
+}
+
 main h2 {
     background-color: #ededed;
     padding: 10px;
@@ -125,6 +129,11 @@ main h3 {
 
 main {
     padding-bottom: 200px;
+}
+
+main ul.disclamer {
+    padding: 20px;
+    border: 5px solid #000;
 }
 
 /**********************************************************************************************************************/
@@ -200,6 +209,18 @@ main #detail_location ul.list > li strong {
     display: inline-block;
     margin-top: 7px;
     width: 100%;
+}
+
+/**********************************************************************************************************************/
+form p label {
+    display: inline-block;
+    width: 30%;
+}
+
+form p select,
+form p input,
+form p textarea {
+    width: 60%;
 }
 
 /**********************************************************************************************************************/
