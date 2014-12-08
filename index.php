@@ -78,12 +78,6 @@
             </p>
 
             <p>
-                <label>Date échéance réservation</label>
-                <input type="date" value="<?= $_REQUEST['date_limite_reservation']; ?>" name="date_limite_reservation"
-                       placeholder="Date échéance réservation">
-            </p>
-
-            <p>
                 <label>Date échéance acompte</label>
                 <input type="date" value="<?= $_REQUEST['date_limite_acompte']; ?>" name="date_limite_acompte"
                        placeholder="Date échéance acompte">
@@ -96,9 +90,8 @@
             </p>
 
             <p>
-                <label>Date échéance réservation</label>
-                <input type="date" value="<?= $_REQUEST['date_limite_reservation']; ?>" name="date_limite_reservation"
-                       placeholder="Date échéance réservation">
+                <label>Montant menage</label>
+                <input type="text" value="<?= $_REQUEST['prix_menage']; ?>" name="prix_menage" placeholder="Montant menage">
             </p>
 
             <p>
@@ -114,6 +107,12 @@
             <p>
                 <label>Prix en lettres</label>
                 <input type="text" value="<?= $_REQUEST['prix_lettres']; ?>" name="prix_lettres" placeholder="Prix en lettres">
+            </p>
+
+            <p>
+                <label for="specimen">Le contrat est un specimen ?</label>
+                <input type="checkbox" value="<?= $_REQUEST['specimen']; ?>" name="specimen" id="specimen"
+                       placeholder="Le contrat est un specimen ?">
             </p>
 
             <p>

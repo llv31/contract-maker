@@ -13,12 +13,12 @@ $data->locataire->telephone = $_REQUEST['telephone'];
 $data->locataire->email = $_REQUEST['email'];
 $data->locataire->dateDebut = $_REQUEST['date_arrivee'];
 $data->locataire->dateFin = $_REQUEST['date_depart'];
-$data->locataire->dateLimiteReservation = $_REQUEST['date_limite_reservation'];
 $data->locataire->dateLimiteAcompte = $_REQUEST['date_limite_acompte'];
 $data->locataire->dateLimitePaiement = $_REQUEST['date_limite_paiement'];
 $data->locataire->caution = $_REQUEST['caution'];
 $data->locataire->prixChiffre = $_REQUEST['prix_chiffres'];
 $data->locataire->prixLettre = $_REQUEST['prix_lettres'];
+$data->locataire->prixMenage = $_REQUEST['prix_menage'];
 $data->locataire->acompte = round($data->locataire->prixChiffre * 0.3);
 $data->locataire->restantDu = $data->locataire->prixChiffre - $data->locataire->acompte;
 /** Almost Dynamique */
@@ -31,18 +31,20 @@ $data->location->nomLong = 'Appartement ETCH SOULET 2 dans chalet';
 $data->location->chapeau = 'Capacité d\'accueil maximale de 14 personnes';
 $data->location->code = 'es2';
 $data->location->type = 'simple';
-$data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au 1er et 2ème étages du chalet avec une entrée indépendante de plain pied.';
+$data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au 1er et au 2ème étage du chalet avec une entrée indépendante de plain pied.';
 $data->location->superficie = 180;
 $data->location->nbPieces = 12;
 $data->location->capacite = 14;
 $data->location->balcon = 'Oui';
 $data->location->jardin = 'Jardin privatif pentu';
-$data->location->autre = 'Casier à ski extérieur dans un cabanon;<br/>Connexion Wi-Fi Orange';
+$data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
 /** Contenu */
 $data->location->introduction =
     sprintf(file_get_contents(sample_path_chalet . $data->location->type . '-introduction.html'), $data->location->nom) .
     sprintf(file_get_contents(sample_path . 'introduction.html'), $data->locataire->civilite);
-$data->location->descriptionChalet = file_get_contents(sample_path_chalet . 'descriptionChalet.html') . sprintf(
+$data->location->descriptionChalet =
+    file_get_contents(sample_path_chalet . 'descriptionChalet.html') .
+    sprintf(
         file_get_contents(sample_path_chalet . $data->location->code . '-descriptionChalet.html'),
         $data->location->emplacement,
         $data->location->superficie,
@@ -51,26 +53,11 @@ $data->location->descriptionChalet = file_get_contents(sample_path_chalet . 'des
         $data->location->balcon,
         $data->location->jardin,
         $data->location->autre
-    );
+    )//    . file_get_contents(sample_path_chalet . 'activiteChalet.html')
+;
 $data->location->detailLocation = file_get_contents(sample_path_chalet . $data->location->code . '-detailLocation.html');
-/**
- * DateDebut
- * DateFin
- * Prix chiffre
- * Prix lettre
- * Acompte
- * Limite versement accompte
- * Restant dû
- * Date limite du paiement
- * Montant Caution
- * Date validation réservation
- * Acompte
- * Limite versement accompte
- * Restant dû
- */
-$data->infosLegalesContent = file_get_contents(sample_path_chalet . 'infosLegales.html');
 $data->infosLegales = sprintf(
-    $data->infosLegalesContent,
+    file_get_contents(sample_path_chalet . 'infosLegales.html'),
     $data->locataire->dateDebut,
     $data->locataire->dateFin,
     $data->locataire->prixChiffre,
@@ -79,11 +66,17 @@ $data->infosLegales = sprintf(
     $data->locataire->dateLimiteAcompte,
     $data->locataire->restantDu,
     $data->locataire->dateLimitePaiement,
+    $data->locataire->prixMenage,
     $data->locataire->caution,
-    $data->locataire->dateLimiteReservation,
+    $data->locataire->prixMenage
+);
+$data->signatures = sprintf(
+    file_get_contents(sample_path_chalet . 'signatureChalet.html'),
+    $data->locataire->dateLimiteAcompte,
     $data->locataire->acompte,
     $data->locataire->dateLimiteAcompte,
-    $data->locataire->restantDu
+    $data->locataire->restantDu,
+    date('d/m/Y')
 );
 ?>
 <!DOCTYPE html>
@@ -96,6 +89,8 @@ $data->infosLegales = sprintf(
 <body>
 <div id="container">
     <header>
+        <span class="illustration"></span>
+
         <h1>Contrat de Location Saisonnière – <?= $data->type->duree; ?> <?= $data->annee; ?></h1>
 
         <h2><?= $data->location->nomLong; ?></h2>
@@ -138,7 +133,7 @@ $data->infosLegales = sprintf(
         <hr class="breaker"/>
 
         <div id="description_chalet">
-            <h2>État descriptif de la location</h2>
+            <h2>État descriptif de l'habitation</h2>
             <?= $data->location->descriptionChalet; ?>
         </div>
 
@@ -154,6 +149,12 @@ $data->infosLegales = sprintf(
         <div id="infos_legales">
             <h2>Observations générales et conditions d'exécution du contrat</h2>
             <?= $data->infosLegales; ?>
+        </div>
+
+        <hr class="breaker"/>
+        <div id="signatures">
+            <h2>Conclusion du contrat</h2>
+            <?= $data->signatures; ?>
         </div>
     </main>
 </div>

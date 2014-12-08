@@ -164,17 +164,16 @@ main #parties ul li.denomination {
 main #description_chalet span.illustration {
     background-image: url(./img/chalet-02.jpg);
     background-position: center center;
-    height: 200px;
+    height: 150px;
     width: 100%;
     margin-bottom: 20px;
 }
 
 main #description_chalet h4 {
-    text-align: center;
-    margin: 20px 0;
+    text-align: left;
+    margin: 10px 0;
     font-size: 1em;
-    color: #EA6C18;
-    font-style: italic;
+    font-weight: normal;
 }
 
 /**********************************************************************************************************************/
@@ -221,6 +220,36 @@ form p select,
 form p input,
 form p textarea {
     width: 60%;
+}
+
+/**********************************************************************************************************************/
+main #signatures ul.signature {
+    list-style-type: none;
+    column-count: 2;
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+}
+
+main #signatures ul.signature li {
+    width: 80%;
+    height: 200px;
+}
+
+main #signatures ul.signature li span {
+    display: block;
+}
+
+main #signatures span.signature {
+    background-image: url(img/signature.png);
+    width: 90px;
+    height: 55px;
+    display: inline-block;
+    /*margin: 0 auto;*/
+}
+
+main #signatures span.rature {
+    display: block;
+    text-align: center;
 }
 
 /**********************************************************************************************************************/
