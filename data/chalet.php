@@ -5,6 +5,7 @@ define('sample_path_chalet', sample_path . 'chalet/');
 
 $data = new stdClass();
 /** Dynamique */
+$data->specimen = isset($_REQUEST['specimen']) ? true : false;
 $data->locataire->civilite = $_REQUEST['civilite'];
 $data->locataire->prenom = ucfirst(strtolower($_REQUEST['prenom']));
 $data->locataire->nom = strtoupper($_REQUEST['nom']);
@@ -22,30 +23,73 @@ $data->locataire->prixMenage = $_REQUEST['prix_menage'];
 $data->locataire->acompte = round($data->locataire->prixChiffre * 0.3);
 $data->locataire->restantDu = $data->locataire->prixChiffre - $data->locataire->acompte;
 /** Almost Dynamique */
-$data->type->duree = $_REQUEST['duree'];;
-$data->type->saison = $_REQUEST['saison'];;
+$data->type->duree = $_REQUEST['duree'];
+$data->type->saison = $_REQUEST['saison'];
 $data->annee = array_shift(array_reverse(explode('/', $data->locataire->dateDebut)));
 /** Statique */
-$data->location->nom = 'Etch Soulet 2';
-$data->location->nomLong = 'Appartement ETCH SOULET 2 dans chalet';
-$data->location->chapeau = 'Capacité d\'accueil maximale de 14 personnes';
-$data->location->code = 'es2';
-$data->location->type = 'simple';
-$data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au 1er et au 2ème étage du chalet avec une entrée indépendante de plain pied.';
-$data->location->superficie = 180;
-$data->location->nbPieces = 12;
-$data->location->capacite = 14;
-$data->location->balcon = 'Oui';
-$data->location->jardin = 'Jardin privatif pentu';
-$data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
-/** Contenu */
+switch ($_REQUEST['location']) {
+    case 'chalet/es2':
+        $data->location->nom = 'Etch Soulet 2';
+        $data->location->nomLong = 'Appartement ETCH SOULET 2 dans chalet';
+        $data->location->chapeau = 'Capacité d\'accueil maximale de 14 personnes';
+        $data->location->code = 'es2';
+        $data->location->type = 'simple';
+        $data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au 1er et au 2ème étage du chalet avec une entrée indépendante de plain pied.';
+        $data->location->superficie = 180;
+        $data->location->nbPieces = 12;
+        $data->location->capacite = 14;
+        $data->location->balcon = 'Oui';
+        $data->location->jardin = 'Jardin privatif pentu';
+        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
+        break;
+    case 'chalet/es1':
+        $data->location->nom = 'Etch Soulet 1';
+        $data->location->nomLong = 'Appartement ETCH SOULET 1 dans chalet';
+        $data->location->chapeau = 'Capacité d\'accueil maximale de 8 personnes';
+        $data->location->code = 'es1';
+        $data->location->type = 'simple';
+        $data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au rez-de-chaussée du chalet avec une entrée indépendante de plain pied.';
+        $data->location->superficie = 100;
+        $data->location->nbPieces = 6;
+        $data->location->capacite = 8;
+        $data->location->balcon = 'Non';
+        $data->location->jardin = 'Jardin privatif clôturé avec vue sur montagnes';
+        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
+        break;
+    default:
+        $data->location->nom = 'Etch Soulet';
+        $data->location->nomLong = 'Appartement ETCH SOULET dans chalet';
+        $data->location->chapeau = 'Capacité d\'accueil maximale de 14 + 8 personnes';
+        $data->location->code = 'es';
+        $data->location->type = 'simple';
+        $data->location->emplacement = '';
+        $data->location->superficie = 280;
+        $data->location->nbPieces = 18;
+        $data->location->capacite = 22;
+        $data->location->balcon = 'Oui';
+        $data->location->jardin = 'Jardin privatif pentu et jardin clôturé';
+        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
+        break;
+}
+switch ($_REQUEST['location']) {
+    case 'chalet/es1':
+    case 'chalet/es2':
+    $data->location->detailLocation = file_get_contents(sample_path_chalet . $data->location->code . '-detailLocation.html');
+        break;
+
+    default:
+        $data->location->detailLocation = file_get_contents(sample_path_chalet . 'es1-detailLocation.html').
+            file_get_contents(sample_path_chalet . 'es2-detailLocation.html');
+        break;
+
+}
 $data->location->introduction =
     sprintf(file_get_contents(sample_path_chalet . $data->location->type . '-introduction.html'), $data->location->nom) .
     sprintf(file_get_contents(sample_path . 'introduction.html'), $data->locataire->civilite);
 $data->location->descriptionChalet =
     file_get_contents(sample_path_chalet . 'descriptionChalet.html') .
     sprintf(
-        file_get_contents(sample_path_chalet . $data->location->code . '-descriptionChalet.html'),
+        file_get_contents(sample_path_chalet . 'descriptionLocation.html'),
         $data->location->emplacement,
         $data->location->superficie,
         $data->location->nbPieces,
@@ -53,9 +97,7 @@ $data->location->descriptionChalet =
         $data->location->balcon,
         $data->location->jardin,
         $data->location->autre
-    )//    . file_get_contents(sample_path_chalet . 'activiteChalet.html')
-;
-$data->location->detailLocation = file_get_contents(sample_path_chalet . $data->location->code . '-detailLocation.html');
+    );
 $data->infosLegales = sprintf(
     file_get_contents(sample_path_chalet . 'infosLegales.html'),
     $data->locataire->dateDebut,
@@ -87,7 +129,7 @@ $data->signatures = sprintf(
     <link rel="stylesheet" href="../media/style.css"/>
 </head>
 <body>
-<div id="container">
+<div id="container" class="<?= !$data->specimen ?: 'specimen'; ?>">
     <header>
         <span class="illustration"></span>
 
@@ -107,16 +149,18 @@ $data->signatures = sprintf(
         <!---->
         <!---->
         <div id="parties">
-            <h3>Envoyé à titre d'information</h3>
+            <?php if ($data->specimen): ?>
+                <h3 class="specimen">Envoyé à titre d'information</h3>
+            <?php endif; ?>
             <strong>Entre les sousignés</strong>
             <ul id="prestataire" class="list">
                 <li>
-                    Monsieur et Madame ROY, gérants agissant pour le compte de <strong>S.A.R.L Luchon Location
-                        Vacances</strong>
-                    <br/>(RCS de Toulouse 50000863600010)
+                    Monsieur et Madame ROY, gérants agissant pour le compte de
+                    <strong>S.A.R.L Luchon Location Vacances</strong><br/>
+                    <em>(RCS de Toulouse 500 008 636 00010)</em>
                 </li>
                 <li><label>Adresse</label> <span>28, avenue de Gascogne <br/> 31110 Saint Mamet</span></li>
-                <li><label>Mobile</label> <span>06.18.64.29 / 06.12.89.31.25</span></li>
+                <li><label>Mobile</label> <span>06.18.64.14.29 / 06.12.89.31.25</span></li>
                 <li><label>E-mail</label> <span>contact@gite-luchon.com</span></li>
                 <li class="denomination">Ci-après nommé <strong>LE PROPRIÉTAIRE</strong></li>
             </ul>
@@ -141,6 +185,7 @@ $data->signatures = sprintf(
 
         <div id="detail_location">
             <h2>Détails de la location</h2>
+            <em class="equipement">Toutes nos chambres sont équipées de draps, couettes et oreillers</em>
             <?= $data->location->detailLocation; ?>
         </div>
 
@@ -154,6 +199,9 @@ $data->signatures = sprintf(
         <hr class="breaker"/>
         <div id="signatures">
             <h2>Conclusion du contrat</h2>
+            <?php if ($data->specimen): ?>
+                <h3 class="specimen">Envoyé à titre d'information</h3>
+            <?php endif; ?>
             <?= $data->signatures; ?>
         </div>
     </main>

@@ -12,6 +12,18 @@
     </header>
     <main>
         <form action="/data/chalet.php">
+
+            <p>
+                <label>Location <br/>(<?= $_REQUEST['location']; ?>)</label>
+                <select name="location">
+                    <option value="chalet/es">Etch Soulet</option>
+                    <option value="chalet/es1">Etch Soulet 1</option>
+                    <option value="chalet/es2">Etch Soulet 2</option>
+                    <option value="chambre/ch-p">Peyresourde</option>
+                    <option value="chambre/ch-e">Estive</option>
+                    <option value="chambre/ch-v">Vénasque</option>
+                </select>
+            </p>
             <p>
                 <label>Civilite</label>
                 <select name="civilite">
@@ -67,25 +79,25 @@
 
             <p>
                 <label>Date arrivée</label>
-                <input type="date" value="<?= $_REQUEST['date_arrivee']; ?>" name="date_arrivee"
+                <input type="text" value="<?= $_REQUEST['date_arrivee']; ?>" name="date_arrivee"
                        placeholder="Date arrivée">
             </p>
 
             <p>
                 <label>Date départ</label>
-                <input type="date" value="<?= $_REQUEST['date_depart']; ?>" name="date_depart"
+                <input type="text" value="<?= $_REQUEST['date_depart']; ?>" name="date_depart"
                        placeholder="Date départ">
             </p>
 
             <p>
                 <label>Date échéance acompte</label>
-                <input type="date" value="<?= $_REQUEST['date_limite_acompte']; ?>" name="date_limite_acompte"
+                <input type="text" value="<?= $_REQUEST['date_limite_acompte']; ?>" name="date_limite_acompte"
                        placeholder="Date échéance acompte">
             </p>
 
             <p>
                 <label>Date échéance paiement</label>
-                <input type="date" value="<?= $_REQUEST['date_limite_paiement']; ?>" name="date_limite_paiement"
+                <input type="text" value="<?= $_REQUEST['date_limite_paiement']; ?>" name="date_limite_paiement"
                        placeholder="Date échéance paiement">
             </p>
 
