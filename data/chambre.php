@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 define('sample_path', '../sample/');
-define('sample_path_chalet', sample_path . 'chalet/');
+define('sample_path_chambre', sample_path . 'chambre/');
 
 $data = new stdClass();
 /** Dynamique */
@@ -14,95 +14,85 @@ $data->locataire->telephone = $_REQUEST['telephone'];
 $data->locataire->email = $_REQUEST['email'];
 $data->locataire->dateDebut = $_REQUEST['date_arrivee'];
 $data->locataire->dateFin = $_REQUEST['date_depart'];
-$data->locataire->dateLimiteAcompte = $_REQUEST['date_limite_acompte'];
-$data->locataire->dateLimitePaiement = $_REQUEST['date_limite_paiement'];
-$data->locataire->caution = $_REQUEST['caution'];
+
+$data->locataire->nbPersonnes = $_REQUEST['nb_personnes'];
+$data->locataire->nbNuits = $_REQUEST['nb_nuit'];
+$data->locataire->prixUniteChiffre = $_REQUEST['prix_nuite'];
 $data->locataire->prixChiffre = $_REQUEST['prix_chiffres'];
 $data->locataire->prixLettre = $_REQUEST['prix_lettres'];
-$data->locataire->prixMenage = $_REQUEST['prix_menage'];
-$data->locataire->acompte = round($data->locataire->prixChiffre * 0.3);
+$data->locataire->montantRemise = $_REQUEST['montant_remise'];
+if (isset($_REQUEST['montant_acompte']) && floatval($_REQUEST['montant_acompte']) > 0 && strlen($_REQUEST['montant_acompte']) > 0) {
+    $data->locataire->acompte = floatval($_REQUEST['montant_acompte']);
+} else {
+    $data->locataire->acompte = round($data->locataire->prixChiffre * 0.3);
+}
 $data->locataire->restantDu = $data->locataire->prixChiffre - $data->locataire->acompte;
-$data->type->duree = $_REQUEST['duree'];
-$data->type->saison = $_REQUEST['saison'];
-$data->location->heureFin = ($_REQUEST['duree'] == 'week-end') ? '17:00' : '10:00';
 $data->annee = array_shift(array_reverse(explode('/', $data->locataire->dateDebut)));
 /** Statique */
+$data->location->code = array_shift(array_reverse(explode('/', $_REQUEST['location'])));
 switch ($_REQUEST['location']) {
-    case 'chalet/es2':
-        $data->location->nom = 'Etch Soulet 2';
-        $data->location->nomLong = 'Appartement ETCH SOULET 2 dans chalet';
-        $data->location->chapeau = 'Capacité d\'accueil maximale de 14 personnes';
-        $data->location->code = 'es2';
-        $data->location->type = 'simple';
-        $data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au 1er et au 2ème étage du chalet avec une entrée indépendante de plain pied.';
-        $data->location->superficie = 180;
-        $data->location->nbPieces = 12;
-        $data->location->capacite = 14;
-        $data->location->balcon = 'Oui';
-        $data->location->jardin = 'Jardin privatif pentu';
-        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
+    case 'chambre/ch-e':
+        $data->location->nom = 'Suite l\'Estive';
+        $data->location->emplacement = 'Appartement indépendant situé au 2ème étage de notre maison.';
+        $data->location->superficie = 41;
+        $data->location->nbPieces = 3;
+        $data->location->capaciteMaximale = 4;
+        $data->location->balcon = 'Oui, vue sur les montagnes et le jardin';
+        $data->location->cuisine = 'Non';
         break;
-    case 'chalet/es1':
-        $data->location->nom = 'Etch Soulet 1';
-        $data->location->nomLong = 'Appartement ETCH SOULET 1 dans chalet';
-        $data->location->chapeau = 'Capacité d\'accueil maximale de 8 personnes';
-        $data->location->code = 'es1';
-        $data->location->type = 'simple';
-        $data->location->emplacement = 'Appartement ' . $data->location->nom . ' situé au rez-de-chaussée du chalet avec une entrée indépendante de plain pied.';
-        $data->location->superficie = 100;
-        $data->location->nbPieces = 6;
-        $data->location->capacite = 8;
+    case 'chambre/ch-v':
+        $data->location->nom = 'Suite le Venasque';
+        $data->location->emplacement = 'Appartement indépendant situé au 1er étage de notre maison.';
+        $data->location->superficie = 35;
+        $data->location->nbPieces = 3;
+        $data->location->capaciteMaximale = 3;
+        $data->location->balcon = 'Oui, vue sur les montagnes';
+        $data->location->cuisine = 'Oui';
+        break;
+    case 'chambre/ch-p':
+        $data->location->nom = 'Suite Familiale Peyresourde';
+        $data->location->emplacement = 'Appartement indépendant situé au 2ème étage de notre maison.';
+        $data->location->superficie = 39;
+        $data->location->nbPieces = 4;
+        $data->location->capaciteMaximale = 4;
         $data->location->balcon = 'Non';
-        $data->location->jardin = 'Jardin privatif clôturé avec vue sur montagnes';
-        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
-        break;
-    default:
-        $data->location->nom = 'Etch Soulet';
-        $data->location->nomLong = 'Appartement ETCH SOULET dans chalet';
-        $data->location->chapeau = 'Capacité d\'accueil maximale de 14 et 8 personnes';
-        $data->location->code = 'es';
-        $data->location->type = 'simple';
-        $data->location->emplacement = '';
-        $data->location->superficie = 280;
-        $data->location->nbPieces = 18;
-        $data->location->capacite = 22;
-        $data->location->balcon = 'Oui';
-        $data->location->jardin = 'Jardin privatif pentu et jardin clôturé';
-        $data->location->autre = 'Connexion Wi-Fi Orange<br/>Casier à ski extérieur dans un cabanon';
+        $data->location->cuisine = 'Oui';
         break;
 }
-switch ($_REQUEST['location']) {
-    case 'chalet/es1':
-    case 'chalet/es2':
-        $data->location->detailLocation = file_get_contents(sample_path_chalet . $data->location->code . '-detailLocation.html');
-        break;
-
-    default:
-        $data->location->detailLocation = file_get_contents(sample_path_chalet . 'es1-detailLocation.html') .
-            file_get_contents(sample_path_chalet . 'es2-detailLocation.html');
-        break;
-
-}
+$data->location->detailLocation = file_get_contents(sample_path_chambre . $data->location->code . '-detailLocation.html');
 $data->location->introduction =
-    sprintf(file_get_contents(sample_path_chalet . $data->location->type . '-introduction.html'), $data->location->nom) .
+    sprintf(file_get_contents(sample_path_chambre . 'introduction.html'), $data->location->nom) .
     sprintf(file_get_contents(sample_path . 'introduction.html'), $data->locataire->civilite);
-$data->location->descriptionChalet =
-    file_get_contents(sample_path_chalet . 'descriptionChalet.html') .
+$data->location->descriptionChambre =
+    file_get_contents(sample_path_chambre . 'descriptionMaison.html') .
     sprintf(
-        file_get_contents(sample_path_chalet . 'descriptionLocation.html'),
+        file_get_contents(sample_path_chambre . 'descriptionLocation.html'),
         $data->location->emplacement,
         $data->location->superficie,
         $data->location->nbPieces,
-        $data->location->capacite,
+        $data->location->capaciteMaximale,
+        $data->locataire->nbPersonnes,
         $data->location->balcon,
-        $data->location->jardin,
-        $data->location->autre
+        $data->location->cuisine
     );
 $data->infosLegales = sprintf(
-    file_get_contents(sample_path_chalet . 'infosLegales.html'),
+    file_get_contents(sample_path_chambre . 'infosLegales.html'),
+    $data->locataire->dateLimiteAcompte,
     $data->locataire->dateDebut,
     $data->locataire->dateFin,
-    $data->location->heureFin,
+    $data->locataire->prixChiffre,
+    $data->locataire->prixLettre,
+    $data->locataire->acompte,
+    $data->locataire->restantDu,
+    $data->locataire->dateLimitePaiement,
+    $data->locataire->prixMenage,
+    $data->locataire->caution,
+    $data->locataire->prixMenage
+);
+$data->tarification = sprintf(
+    file_get_contents(sample_path_chambre . 'tarifLocation.html'),
+    $data->locataire->dateDebut,
+    $data->locataire->dateFin,
     $data->locataire->prixChiffre,
     $data->locataire->prixLettre,
     $data->locataire->acompte,
@@ -134,10 +124,9 @@ $data->signatures = sprintf(
     <header>
         <span class="illustration"></span>
 
-        <h1>Contrat de Location Saisonnière – <?= $data->type->duree; ?> <?= $data->annee; ?></h1>
+        <h1>Contrat de Location 'Au delà du temps' - <?= $data->annee; ?></h1>
 
-        <h2><?= $data->location->nomLong; ?></h2>
-        <em><?= $data->location->chapeau; ?></em>
+        <h2><?= $data->location->nom; ?></h2>
     </header>
     <main>
         <div id="introduction">
@@ -177,9 +166,10 @@ $data->signatures = sprintf(
 
         <hr class="breaker"/>
 
-        <div id="description_chalet">
+        <div id="description_chambre">
             <h2>État descriptif de l'habitation</h2>
-            <?= $data->location->descriptionChalet; ?>
+            <?= $data->location->descriptionChambre; ?>
+            <img src="../media/img/gmaps-chambres.png">
         </div>
 
         <hr class="breaker"/>
