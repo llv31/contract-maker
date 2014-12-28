@@ -15,9 +15,11 @@ $data->locataire->email = $_REQUEST['email'];
 $data->locataire->dateDebut = $_REQUEST['date_arrivee'];
 $data->locataire->dateFin = $_REQUEST['date_depart'];
 
+$data->locataire->dateLimiteAcompte = $_REQUEST['date_limite_acompte'];
+$data->locataire->dateLimitePaiement = $_REQUEST['date_limite_paiement'];
 $data->locataire->nbPersonnes = $_REQUEST['nb_personnes'];
 $data->locataire->nbNuits = $_REQUEST['nb_nuit'];
-$data->locataire->prixUniteChiffre = $_REQUEST['prix_nuite'];
+$data->locataire->prixNuiteChiffre = $_REQUEST['prix_nuite'];
 $data->locataire->prixChiffre = $_REQUEST['prix_chiffres'];
 $data->locataire->prixLettre = $_REQUEST['prix_lettres'];
 $data->locataire->montantRemise = $_REQUEST['montant_remise'];
@@ -29,6 +31,7 @@ if (isset($_REQUEST['montant_acompte']) && floatval($_REQUEST['montant_acompte']
 $data->locataire->restantDu = $data->locataire->prixChiffre - $data->locataire->acompte;
 $data->annee = array_shift(array_reverse(explode('/', $data->locataire->dateDebut)));
 /** Statique */
+$data->location->mention = $_REQUEST['mention'];
 $data->location->code = array_shift(array_reverse(explode('/', $_REQUEST['location'])));
 switch ($_REQUEST['location']) {
     case 'chambre/ch-e':
@@ -60,9 +63,11 @@ switch ($_REQUEST['location']) {
         break;
 }
 $data->location->detailLocation = file_get_contents(sample_path_chambre . $data->location->code . '-detailLocation.html');
-$data->location->introduction =
-    sprintf(file_get_contents(sample_path_chambre . 'introduction.html'), $data->location->nom) .
-    sprintf(file_get_contents(sample_path . 'introduction.html'), $data->locataire->civilite);
+$data->location->introduction = sprintf(
+    file_get_contents(sample_path_chambre . 'introduction.html'),
+    $data->location->nom,
+    $data->locataire->civilite
+);
 $data->location->descriptionChambre =
     file_get_contents(sample_path_chambre . 'descriptionMaison.html') .
     sprintf(
@@ -70,41 +75,31 @@ $data->location->descriptionChambre =
         $data->location->emplacement,
         $data->location->superficie,
         $data->location->nbPieces,
-        $data->location->capaciteMaximale,
         $data->locataire->nbPersonnes,
-        $data->location->balcon,
-        $data->location->cuisine
+        $data->location->mention
     );
 $data->infosLegales = sprintf(
     file_get_contents(sample_path_chambre . 'infosLegales.html'),
     $data->locataire->dateLimiteAcompte,
-    $data->locataire->dateDebut,
-    $data->locataire->dateFin,
-    $data->locataire->prixChiffre,
-    $data->locataire->prixLettre,
     $data->locataire->acompte,
-    $data->locataire->restantDu,
-    $data->locataire->dateLimitePaiement,
-    $data->locataire->prixMenage,
-    $data->locataire->caution,
-    $data->locataire->prixMenage
+    $data->locataire->restantDu
 );
 $data->tarification = sprintf(
     file_get_contents(sample_path_chambre . 'tarifLocation.html'),
     $data->locataire->dateDebut,
     $data->locataire->dateFin,
+    round($data->locataire->prixChiffre / $data->locataire->nbNuits),
+    $data->locataire->nbPersonnes,
+    round($data->locataire->prixChiffre / $data->locataire->nbNuits),
+    $data->locataire->nbNuits,
     $data->locataire->prixChiffre,
     $data->locataire->prixLettre,
     $data->locataire->acompte,
     $data->locataire->dateLimiteAcompte,
-    $data->locataire->restantDu,
-    $data->locataire->dateLimitePaiement,
-    $data->locataire->prixMenage,
-    $data->locataire->caution,
-    $data->locataire->prixMenage
+    $data->locataire->restantDu
 );
 $data->signatures = sprintf(
-    file_get_contents(sample_path . 'signature.html'),
+    file_get_contents(sample_path_chambre . 'signature.html'),
     $data->locataire->dateLimiteAcompte,
     $data->locataire->acompte,
     $data->locataire->dateLimiteAcompte,
@@ -120,7 +115,7 @@ $data->signatures = sprintf(
     <link rel="stylesheet" href="../media/style.css"/>
 </head>
 <body>
-<div id="container" class="<?= !$data->specimen ?: 'specimen'; ?>">
+<div id="container" class="<?= !$data->specimen ?: 'specimen'; ?> chambre">
     <header>
         <span class="illustration"></span>
 
@@ -169,18 +164,19 @@ $data->signatures = sprintf(
         <div id="description_chambre">
             <h2>État descriptif de l'habitation</h2>
             <?= $data->location->descriptionChambre; ?>
-            <img src="../media/img/gmaps-chambres.png">
         </div>
 
-        <hr class="breaker"/>
 
         <div id="detail_location">
-            <h2>Détails de la location</h2>
-            <em class="equipement">Toutes nos chambres sont équipées de draps, couettes et oreillers</em>
             <?= $data->location->detailLocation; ?>
         </div>
 
         <hr class="breaker"/>
+
+        <div id="tarification">
+            <h2>Période et tarification</h2>
+            <?= $data->tarification; ?>
+        </div>
 
         <div id="infos_legales">
             <h2>Observations générales et conditions d'exécution du contrat</h2>
@@ -188,6 +184,7 @@ $data->signatures = sprintf(
         </div>
 
         <hr class="breaker"/>
+
         <div id="signatures">
             <h2>Conclusion du contrat</h2>
             <?php if ($data->specimen): ?>

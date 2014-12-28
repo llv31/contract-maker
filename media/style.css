@@ -131,6 +131,11 @@ main h3 {
     text-transform: uppercase;
 }
 
+main h3 em {
+    font-size: .75em;
+    text-transform: none;
+}
+
 main {
     padding-bottom: 200px;
 }
@@ -217,6 +222,15 @@ main #detail_location ul.list > li label {
     text-align: left;
 }
 
+.chambre main ul.list > li span {
+    width: 65%;
+}
+
+.chambre main ul.list > li label,
+.chambre main #detail_location ul.list > li label {
+    width: 35%;
+}
+
 main #detail_location ul.list > li span {
     width: 75%;
 }
@@ -274,6 +288,17 @@ main #signatures span.signature {
 main #signatures span.rature {
     display: block;
     text-align: center;
+}
+
+/**********************************************************************************************************************/
+#container main #tarification h2 {
+    margin-bottom: 10px;
+}
+
+/**********************************************************************************************************************/
+#container main #description_chambre p.mention {
+    margin-bottom: 10px;
+    color: #C14641;
 }
 
 /**********************************************************************************************************************/

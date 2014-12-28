@@ -135,15 +135,20 @@ if (isset($_REQUEST['date_arrivee'])) {
         </p>
 
         <p>
-            <label for="specimen">Le contrat est un specimen ?</label>
-            <input type="checkbox" value="<?= $_REQUEST['specimen']; ?>" name="specimen" id="specimen"
-                   placeholder="Le contrat est un specimen ?">
-        </p>
-
-        <p>
             <label>Montant acompte</label>
             <input type="text" value="<?= $_REQUEST['montant_acompte']; ?>" name="montant_acompte"
                    placeholder="Montant acompte (laisser vide pour 30%)">
+        </p>
+
+        <p>
+            <label>Mention particulière</label>
+            <textarea name="mention"><?= $_REQUEST['mention']; ?></textarea>
+        </p>
+
+        <p>
+            <label for="specimen">Le contrat est un specimen ?</label>
+            <input type="checkbox" value="<?= $_REQUEST['specimen']; ?>" name="specimen" id="specimen"
+                   placeholder="Le contrat est un specimen ?">
         </p>
 
         <p>
@@ -275,15 +280,20 @@ if (isset($_REQUEST['date_arrivee'])) {
         </p>
 
         <p>
+            <label>Prix en lettres</label>
+            <input type="text" value="<?= $_REQUEST['prix_lettres']; ?>" name="prix_lettres"
+                   placeholder="Prix en lettres">
+        </p>
+
+        <p>
             <label>Montant acompte</label>
             <input type="text" value="<?= $_REQUEST['montant_acompte']; ?>" name="montant_acompte"
                    placeholder="Montant acompte (laisser vide pour 30%)">
         </p>
 
         <p>
-            <label>Prix en lettres</label>
-            <input type="text" value="<?= $_REQUEST['prix_lettres']; ?>" name="prix_lettres"
-                   placeholder="Prix en lettres">
+            <label>Mention particulière</label>
+            <textarea name="mention"><?= $_REQUEST['mention']; ?></textarea>
         </p>
 
         <p>

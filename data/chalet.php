@@ -27,6 +27,7 @@ $data->type->saison = $_REQUEST['saison'];
 $data->location->heureFin = ($_REQUEST['duree'] == 'week-end') ? '17:00' : '10:00';
 $data->annee = array_shift(array_reverse(explode('/', $data->locataire->dateDebut)));
 /** Statique */
+$data->location->mention = $_REQUEST['mention'];
 switch ($_REQUEST['location']) {
     case 'chalet/es2':
         $data->location->nom = 'Etch Soulet 2';
@@ -85,7 +86,7 @@ switch ($_REQUEST['location']) {
 }
 $data->location->introduction =
     sprintf(file_get_contents(sample_path_chalet . $data->location->type . '-introduction.html'), $data->location->nom) .
-    sprintf(file_get_contents(sample_path . 'introduction.html'), $data->locataire->civilite);
+    sprintf(file_get_contents(sample_path_chalet . 'introduction.html'), $data->locataire->civilite);
 $data->location->descriptionChalet =
     file_get_contents(sample_path_chalet . 'descriptionChalet.html') .
     sprintf(
@@ -114,7 +115,7 @@ $data->infosLegales = sprintf(
     $data->locataire->prixMenage
 );
 $data->signatures = sprintf(
-    file_get_contents(sample_path . 'signature.html'),
+    file_get_contents(sample_path_chalet . 'signature.html'),
     $data->locataire->dateLimiteAcompte,
     $data->locataire->acompte,
     $data->locataire->dateLimiteAcompte,
