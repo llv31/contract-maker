@@ -62,6 +62,16 @@ switch ($_REQUEST['location']) {
         $data->location->cuisine = 'Oui';
         break;
 }
+$data->sousignes =
+    sprintf(
+        file_get_contents(sample_path_chalet . 'sousignes.html'),
+        $data->locataire->civilite,
+        $data->locataire->prenom,
+        $data->locataire->nom,
+        $data->locataire->adresse,
+        $data->locataire->telephone,
+        $data->locataire->email
+    );
 $data->location->detailLocation = file_get_contents(sample_path_chambre . $data->location->code . '-detailLocation.html');
 $data->location->introduction = sprintf(
     file_get_contents(sample_path_chambre . 'introduction.html'),
@@ -137,26 +147,7 @@ $data->signatures = sprintf(
             <?php if ($data->specimen): ?>
                 <h3 class="specimen">Envoyé à titre d'information</h3>
             <?php endif; ?>
-            <strong>Entre les sousignés</strong>
-            <ul id="prestataire" class="list">
-                <li>
-                    Monsieur et Madame ROY, gérants agissant pour le compte de
-                    <strong>S.A.R.L Luchon Location Vacances</strong><br/>
-                    <em>(RCS de Toulouse 500 008 636 00010)</em>
-                </li>
-                <li><label>Adresse</label> <span>28, avenue de Gascogne <br/> 31110 Saint Mamet</span></li>
-                <li><label>Mobile</label> <span>06.18.64.14.29 / 06.12.89.31.25</span></li>
-                <li><label>E-mail</label> <span>contact@gite-luchon.com</span></li>
-                <li class="denomination">Ci-après nommé <strong>LE PROPRIÉTAIRE</strong></li>
-            </ul>
-            <strong>Et</strong>
-            <ul id="locataire" class="list">
-                <li><?= $data->locataire->civilite; ?> <?= $data->locataire->prenom; ?> <?= $data->locataire->nom; ?></li>
-                <li><label>Adresse</label> <span><?= $data->locataire->adresse; ?></span></li>
-                <li><label>Téléphone</label> <span><?= $data->locataire->telephone; ?></span></li>
-                <li><label>E-mail</label> <span><?= $data->locataire->email; ?></span></li>
-                <li class="denomination">Ci-après nommé <strong>LE LOCATAIRE</strong></li>
-            </ul>
+            <?= $data->sousignes ?>
         </div>
 
         <hr class="breaker"/>
